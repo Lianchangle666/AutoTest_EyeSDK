@@ -13,6 +13,8 @@ Scan3DExposure_ok_6,99 99 99
 Scan3DExposure_no_6,99 99.1 99.1 
 Scan3DExposure_ok_7,0.1 0.1 99 
 Scan3DExposure_no_7,0.1 0.1 0.1 0.1 
+Scan3DExposure_ok_8,0.1 0.1 30
+Scan3DExposure_no_8,0.1 0.1 100
 ,
 Scan3DGain_ok_1,0
 Scan3DGain_no_1,17
@@ -29,7 +31,7 @@ Scan2DExposureTime_ok_1,0.1
 Scan2DExposureTime_no_1,0
 Scan2DExposureTime_ok_2,999
 Scan2DExposureTime_no_2,999.1
-Scan2DExposureTime_ok_3,55
+Scan2DExposureTime_ok_3,33
 ,
 Scan2DExpectedGrayValue_ok_1,0
 Scan2DExpectedGrayValue_no_1,256
@@ -63,6 +65,8 @@ setScan2DSharpenFactor_ok_1,0
 setScan2DSharpenFactor_no_1,6
 setScan2DSharpenFactor_ok_2,0.1
 setScan2DSharpenFactor_no_2,6.1
+setScan2DSharpenFactor_ok_3,5
+setScan2DSharpenFactor_no_3,7
 ,
 DepthRange_ok_1,1 2
 DepthRange_no_1,2 1
