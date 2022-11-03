@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sstream>
-#include "readCSV.h"
+#include "ReadCsv.h"
 #include "SampleUtil.h"
 #include "AuxiliaryFunction.h"
 

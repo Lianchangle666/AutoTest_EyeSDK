@@ -1,11 +1,5 @@
 #include <iostream>
 #include "MechEyeApi.h"
-//#include "SampleUtil.h"
-//#include "OpenCVUtil.h"
-//#include <algorithm>
-//#include "readCSV.h"
-//#include <sstream>
-//#include "AuxiliaryFunction.h"
 #include "MainFunction.h"
 
 
