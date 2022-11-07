@@ -5,7 +5,7 @@
 
 int main()
 {
-	std::string ip = "192.168.20.46";
+	std::string ip = "192.168.20.149";
 	std::string path = R"(../log_data_drive.csv)";
 	FunctionPackage fp(path, ip);
 	fp.FunctionMain();

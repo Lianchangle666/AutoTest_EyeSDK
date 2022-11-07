@@ -15,6 +15,7 @@ public:
 	inline void _FunctionScan3DGain(int);
 	inline void _FunctionScan3DROI(int);
 
+	inline void _FunctionScan2DExposureMode(int);
 	inline void _FunctionScan2DExposureTime(int);
 	inline void _FunctionScan2DExpectedGrayValue(int);
 	inline void _FunctionScan2DROI(int);
@@ -47,6 +48,8 @@ private:
 	std::string ip;
 	std::string path;
 	std::vector<CaseValue> allcase;
+
+protected:
 	mmind::api::MechEyeDevice device;
 };
 
@@ -127,6 +130,22 @@ inline void FunctionPackage::_FunctionScan3DROI(int i)
 		std::cout << "¡¾Fail¡¿Scan3DROI :  get:" << RoiToString(getroi) << "  input:" << RoiToString(SringSplitROI(allcase[i].second)) << std::endl;
 	}
 }
+
+inline void FunctionPackage::_FunctionScan2DExposureMode(int i)
+{
+	SCAN_2D_EXPOSURE_MODE mode;
+	ShowError(device.setScan2DExposureMode(Scan2DExposureMode(allcase[i].second)));
+	ShowError(device.getScan2DExposureMode(mode));
+	if (PrintScan2DExposureMode(mode) == allcase[i].second)
+	{
+		std::cout << "¡¾Successful¡¿Scan2DExposureMode :  get:" << PrintScan2DExposureMode(mode) << "  input:" << allcase[i].second << std::endl;
+	}
+	else
+	{
+		std::cout << "¡¾Fail¡¿Scan2DExposureMode :  get:" << PrintScan2DExposureMode(mode) << "  input:" << allcase[i].second << std::endl;
+	}
+}
+
 // timed
 inline void FunctionPackage::_FunctionScan2DExposureTime(int i)
 {
@@ -284,16 +303,18 @@ inline void FunctionPackage::_FunctionFringeMinThreshold(int i)
 inline void FunctionPackage::_FunctionProjectorFringeCodingMode(int i)
 {
 	PROJECTOR_FRINGE_CODING_MODE pl;
-	ShowError(device.setProjectorFringeCodingMode(ProjectFringeCodingMode(allcase[i].second)));
+	std::string m = ShowError(device.setProjectorFringeCodingMode(ProjectFringeCodingMode(allcase[i].second)));
+	//std::cout << m << std::endl;
+
 	ShowError(device.getProjectorFringeCodingMode(pl));
 
 	if (PrintProjectFringeCodingModeName(pl) == allcase[i].second)
 	{
-		std::cout << "¡¾Successful¡¿FringeContrastThreshold :  get:" << PrintProjectFringeCodingModeName(pl) << "  input:" << allcase[i].second << std::endl;
+		std::cout << "¡¾Successful¡¿ProjectorFringeCodingMode :  get:" << PrintProjectFringeCodingModeName(pl) << "  input:" << allcase[i].second << std::endl;
 	}
 	else
 	{
-		std::cout << "¡¾Fail¡¿FringeContrastThreshold :  get:" << PrintProjectFringeCodingModeName(pl) << "  input:" << allcase[i].second << std::endl;
+		std::cout << "¡¾Fail¡¿ProjectorFringeCodingMode :  get:" << PrintProjectFringeCodingModeName(pl) << "  input:" << allcase[i].second << std::endl;
 	}
 }
 
@@ -305,11 +326,11 @@ inline void FunctionPackage::_FunctionProjectorPowerLevel(int i)
 
 	if (PrintProjectorPowerLevelModelName(pl) == allcase[i].second)
 	{
-		std::cout << "¡¾Successful¡¿FringeContrastThreshold :  get:" << PrintProjectorPowerLevelModelName(pl) << "  input:" << allcase[i].second << std::endl;
+		std::cout << "¡¾Successful¡¿ProjectorPowerLevel :  get:" << PrintProjectorPowerLevelModelName(pl) << "  input:" << allcase[i].second << std::endl;
 	}
 	else
 	{
-		std::cout << "¡¾Fail¡¿FringeContrastThreshold :  get:" << PrintProjectorPowerLevelModelName(pl) << "  input:" << allcase[i].second << std::endl;
+		std::cout << "¡¾Fail¡¿ProjectorPowerLevel :  get:" << PrintProjectorPowerLevelModelName(pl) << "  input:" << allcase[i].second << std::endl;
 	}
 }
 
@@ -321,11 +342,11 @@ inline void FunctionPackage::_FunctionProjectorAntiFlickerMode(int i)
 
 	if (PrintProjectorAntiFlickerModeName(pl) == allcase[i].second)
 	{
-		std::cout << "¡¾Successful¡¿FringeContrastThreshold :  get:" << PrintProjectorAntiFlickerModeName(pl) << "  input:" << allcase[i].second << std::endl;
+		std::cout << "¡¾Successful¡¿ProjectorAntiFlickerMode :  get:" << PrintProjectorAntiFlickerModeName(pl) << "  input:" << allcase[i].second << std::endl;
 	}
 	else
 	{
-		std::cout << "¡¾Fail¡¿FringeContrastThreshold :  get:" << PrintProjectorAntiFlickerModeName(pl) << "  input:" << allcase[i].second << std::endl;
+		std::cout << "¡¾Fail¡¿ProjectorAntiFlickerMode :  get:" << PrintProjectorAntiFlickerModeName(pl) << "  input:" << allcase[i].second << std::endl;
 	}
 }
 // UHP
@@ -439,6 +460,7 @@ void FunctionPackage::FunctionMain()
 		else if (FindTestCase(allcase[i].first, "Scan3DGain")) { _FunctionScan3DGain(i); }
 		else if (FindTestCase(allcase[i].first, "Scan3DROI")) { _FunctionScan3DROI(i); }
 
+		else if (FindTestCase(allcase[i].first, "Scan2DExposureMode")) { _FunctionScan2DExposureMode(i); }
 		else if (FindTestCase(allcase[i].first, "Scan2DExposureTime")) { _FunctionScan2DExposureTime(i); }
 		else if (FindTestCase(allcase[i].first, "Scan2DExpectedGrayValue")) { _FunctionScan2DExpectedGrayValue(i); }
 		else if (FindTestCase(allcase[i].first, "Scan23ROI")) { _FunctionScan2DROI(i); }
@@ -469,5 +491,6 @@ void FunctionPackage::FunctionMain()
 
 FunctionPackage::~FunctionPackage()
 {
+	std::cout << "-------------Disconnnected Successfully.-------------" << std::endl;
 	device.disconnect();
 }

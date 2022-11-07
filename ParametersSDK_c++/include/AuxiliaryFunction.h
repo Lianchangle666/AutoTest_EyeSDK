@@ -1,6 +1,9 @@
 #include <iostream>
 #include "MechEyeApi.h"
 
+using COLOR_MAP = mmind::api::ColorMap;
+using DEPTH_MAP = mmind::api::DepthMap;
+using SCAN_2D_EXPOSURE_MODE = mmind::api::Scanning2DSettings::Scan2DExposureMode;
 using ROI_2D_3D = mmind::api::ROI;
 using POINT_CLOUD_PROCESS_OUTLIER_FILTER_MODE = mmind::api::PointCloudProcessingSettings::CloudOutlierFilterMode;
 using POINT_CLOUD_PROCESS_SMOOTH_MODE = mmind::api::PointCloudProcessingSettings::CloudSmoothMode;
@@ -11,8 +14,6 @@ using UHP_FRINGE_CODING_MODE = mmind::api::UhpSettings::UhpFringeCodingMode;
 using UHP_CAPTURE_MODE = mmind::api::UhpSettings::UhpCaptureMode;
 using LASER_LSR_SETTINGS = mmind::api::LaserSettings;
 using LASER_LSR_SETTINGS_CODING_MODE = mmind::api::LaserSettings::LaserFringeCodingMode;
-
-
 
 unsigned width = 0;
 unsigned height = 0;
@@ -94,6 +95,24 @@ bool CompareVectorEqual(std::vector<double>v1, std::vector<double>v2)
 	}
 
 }
+
+//  Enter the mode name to return the Scan2DExposureMode mode type
+SCAN_2D_EXPOSURE_MODE Scan2DExposureMode(std::string modelname)
+{
+	return modelname == "Timed" ? SCAN_2D_EXPOSURE_MODE::Timed :
+		(modelname == "Auto" ? SCAN_2D_EXPOSURE_MODE::Auto :
+			(modelname == "HDR" ? SCAN_2D_EXPOSURE_MODE::HDR : SCAN_2D_EXPOSURE_MODE::Flash));
+			
+}
+
+// Enter the mode status and return Scan2DExposureMode Mode name
+std::string PrintScan2DExposureMode(SCAN_2D_EXPOSURE_MODE value)
+{
+	return value == SCAN_2D_EXPOSURE_MODE::Timed ? "Timed" :
+		(value == SCAN_2D_EXPOSURE_MODE::Auto ? "Auto" :
+			(value == SCAN_2D_EXPOSURE_MODE::HDR ? "HDR" : "Flash"));
+}
+
 
 // Find test cases based on strings
 bool FindTestCase(std::string& allstring, const std::string& objstring)
