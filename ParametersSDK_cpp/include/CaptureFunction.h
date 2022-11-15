@@ -6,14 +6,13 @@
 #include "MainFunction.h"
 #include "OpenCVUtil.h"
 
-std::string split(80, '*');
 
 class CapturePackage : public FunctionPackage
 {
 public:
 	CapturePackage() = delete;
 	CapturePackage(CapturePackage&) = delete;
-	CapturePackage(const std::string, std::string);
+	explicit CapturePackage(const std::string, const std::string);
 	
 	inline void FunctionCaptureColorMap(const std::string);
 	inline void FunctionCaptureDepthMap(const std::string);
@@ -26,7 +25,7 @@ private:
 	std::string folder;
 };
 
-CapturePackage::CapturePackage(const std::string _path, std::string _ip) : FunctionPackage(_path, _ip) 
+CapturePackage::CapturePackage(const std::string _path, const std::string _ip) : FunctionPackage(_path, _ip)
 {
 	this->folder = ".\\capture_foldr";
 

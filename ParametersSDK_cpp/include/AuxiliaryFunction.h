@@ -15,8 +15,11 @@ using UHP_CAPTURE_MODE = mmind::api::UhpSettings::UhpCaptureMode;
 using LASER_LSR_SETTINGS = mmind::api::LaserSettings;
 using LASER_LSR_SETTINGS_CODING_MODE = mmind::api::LaserSettings::LaserFringeCodingMode;
 
-unsigned width = 0;
-unsigned height = 0;
+extern unsigned width = 0;
+extern unsigned height = 0;
+extern std::string split(100, '*');
+
+
 
 inline std::string ShowError(const mmind::api::ErrorStatus& status)
 {
@@ -33,7 +36,7 @@ std::vector<T1> StringSplitNumber(std::string linestr)
 {
 	std::vector<T1> value;
 	std::string str;
-
+	
 	std::stringstream sin(linestr);
 	while (std::getline(sin, str, ' '))
 	{

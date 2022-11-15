@@ -4,12 +4,13 @@
 #include "SampleUtil.h"
 #include "AuxiliaryFunction.h"
 
+
 class FunctionPackage
 {
 public:
 	FunctionPackage() = delete;
 	FunctionPackage(FunctionPackage&) = delete;
-	FunctionPackage(const std::string path, const std::string ip);
+	explicit FunctionPackage(const std::string path, const std::string ip);
 
 	inline void _FunctionScan3DExposure(int);
 	inline void _FunctionScan3DGain(int);
@@ -62,6 +63,13 @@ FunctionPackage::FunctionPackage(const std::string path, const std::string ip) :
 
 	// connect camera
 	device.connect(ip);
+
+	// capture version message
+	std::string msg = mmind::api::getApiInformation();
+	std::cout << split << std::endl
+		<< msg << std::endl
+		<< split << std::endl;
+
 
 	// print device information
 	mmind::api::MechEyeDeviceInfo deviceinfo;

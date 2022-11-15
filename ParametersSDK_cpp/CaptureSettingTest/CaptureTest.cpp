@@ -6,11 +6,12 @@ int main()
 
 
 	int n = 0;
+
+	std::string ip = "192.168.20.97";
+	std::string path = R"(../PROM_AntiFlickerMode.csv)";
+	CapturePackage cp(path, ip);
 	while (n < 2000)
 	{
-		std::string ip = "192.168.20.197";
-		std::string path = R"(../PROM_AntiFlickerMode.csv)";
-		CapturePackage cp(path, ip);
 		//cp.FunctionMain();  // Send parameters
 		cp.FunctionCaptureColorMap(std::to_string(n));
 		cp.FunctionCaptureDepthMap(std::to_string(n));
