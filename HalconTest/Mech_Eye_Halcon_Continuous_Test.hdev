@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<hdevelop file_version="1.2" halcon_version="22.05.0.0">
+<hdevelop file_version="1.2" halcon_version="20.11.1.2">
 <procedure name="main">
 <interface/>
 <body>
 <c></c>
 <l>info_framegrabber ('GigEVision2', 'device', DeviceInfo, DeviceInfoValues)</l>
-<l>tuple_regexp_select (DeviceInfoValues, 'NANO', MmindDevice) </l>
-<c></c>
+<l>tuple_regexp_select (DeviceInfoValues, 'MechEyeProLEnhanced', MmindDevice) </l>
+<l>if (not |MmindDevice|)</l>
+<l>    stop()</l>
+<l>endif</l>
 <l>open_framegrabber ('GigEVision2', 1, 1, 0, 0, 0, 0, 'default', -1, 'default', -1, 'false', 'default', MmindDevice[0], 0, -1, AcqHandle)</l>
 <c></c>
 <c></c>
-<l>Error_index := []</l>
-<l>Error_grabtime := []</l>
-<l>ErrorMessage := []</l>
-<l>Count := 0</l>
+<l>all_error_index := []</l>
+<l>all_error_message := []</l>
 <c></c>
-<l>while(1)</l>
+<l>count_write_object_model_3d_error := 0</l>
+<l>count_write_image_error := 0</l>
+<l>count_grab_data_error := 0</l>
+<l>other_error := []</l>
+<c></c>
+<l>run_times := 10000</l>
+<c></c>
+<l>cur_times := 0</l>
+<c></c>
+<l>while(cur_times &lt; run_times)</l>
 <l>try</l>
-<l>    Count := Count + 1</l>
-<l>    count_seconds(Start)</l>
+<l>    cur_times := cur_times + 1</l>
 <l>    set_framegrabber_param (AcqHandle, 'grab_timeout', 8000)</l>
 <l>    set_framegrabber_param (AcqHandle, 'UserSetDefault', 'default')</l>
 <l>    set_framegrabber_param (AcqHandle, '[Stream]GevStreamMaxPacketGaps', 500)</l>
@@ -42,18 +50,32 @@
 <c>    </c>
 <l>    get_object_model_3d_params(ObjectModel3D, 'num_points', NumOfPoints)</l>
 <c></c>
-<l>if(NumOfPoints != 0)</l>
-<l>    write_object_model_3d (ObjectModel3D, 'ply', 'PointCloud.ply', [], [])</l>
-<l>endif</l>
+<l>    if(NumOfPoints != 0)</l>
+<l>        write_object_model_3d (ObjectModel3D, 'ply', 'PointCloud.ply', [], [])</l>
+<l>    endif</l>
 <c></c>
 <l>    wait_seconds(3)</l>
 <c>    </c>
 <c>    </c>
 <l>catch (Exception)</l>
-<l>        count_seconds(End)</l>
-<l>        tuple_insert(Error_grabtime, 0, End-Start, Error_grabtime)</l>
-<l>        tuple_insert(Error_index, 0, Count, Error_index)</l>
-<l>        tuple_insert(ErrorMessage, 0, Exception, ErrorMessage)</l>
+<c>    </c>
+<l>        dev_get_exception_data (Exception, 'operator', msg)</l>
+<c>        </c>
+<l>        if (msg == 'write_object_model_3d')</l>
+<l>            count_write_object_model_3d_error := count_write_object_model_3d_error + 1</l>
+<c>        </c>
+<l>        elseif (msg == 'grab_data')</l>
+<l>            count_grab_data_error := count_grab_data_error + 1</l>
+<c>        </c>
+<l>        elseif (msg == 'write_image')</l>
+<l>            count_write_image_error := count_write_image_error + 1</l>
+<l>        else</l>
+<l>            tuple_insert(other_error, 0, msg, other_error)</l>
+<c></c>
+<l>        endif</l>
+<c>        </c>
+<l>        tuple_insert(all_error_index, 0, cur_times, all_error_index)</l>
+<l>        tuple_insert(all_error_message, 0, Exception, all_error_message)</l>
 <l>endtry</l>
 <l>endwhile</l>
 <c></c>
